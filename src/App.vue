@@ -6,6 +6,10 @@
   <router-view/>
 </template>
 
+<script>
+const a = window.screen.width
+console.log(a)
+</script>
 <style lang="less">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
