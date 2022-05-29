@@ -1,20 +1,96 @@
-.Header-container {
+.Header__container {
   width: 100%;
   height: 50px;
-  .container-lg {
+  .Header__cont {
+    width: 75%;
     height: 100%;
-    // 左侧logo
-    .Header__logo {
+    margin: 0 auto;
+    // 导航栏
+    .Header__nav {
+      height: 50px;
       line-height: 50px;
-      img {
-        height: 40px;
+      .Header__logo {
+        float: left;
+        line-height: 50px;
+        img {
+          height: 40px;
+        }
+      }
+      ul {
+        float: left;
+        list-style-type: none;
+        li {
+          padding: 0 18px;
+          float: left;
+          a {
+            color: #666;
+            font-size: 16px;
+            text-decoration: none;
+          }
+        }
+        li:first-child {
+          padding-left: 0;
+        }
+        li:hover {
+          a {
+            color: #0084ff;
+          }
+        }
+      }
+      .Header__search {
+        position: relative;
+        float: right;
+        width: 230px;
+        height: 100%;
+        input {
+          width: 100%;
+          height: 30px;
+          padding-left: 15px;
+          padding-right: 48px;
+          outline: none;
+          border: none;
+          border-radius: 7px;
+          background: #e5e5e5;
+          color: #8590a6;
+          font-size: 12px;
+        }
+        i {
+          position: absolute;
+          right: 20px;
+          margin-top: 3px;
+          color: #8590a6;
+        }
       }
     }
-    // 中间导航栏
-    .Header__nav{
-      list-style-type: none;
-      li{
-        float: left;
+    // 右侧
+    .Header__right {
+      ul {
+        line-height: 50px;
+        list-style-type: none;
+        li {
+          float: left;
+          padding-left: 20px;
+          a {
+            text-decoration: none;
+            line-height: 50px;
+            img {
+              width: 33px;
+            }
+          }
+        }
+        li:first-child {
+          padding-left: 0;
+          a {
+            img {
+              width: 40px;
+            }
+          }
+        }
+        li:nth-child(2) {
+          a {
+            color: orange;
+          }
+        }
       }
     }
   }

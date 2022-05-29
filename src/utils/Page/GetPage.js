@@ -1,5 +1,10 @@
 // Header 请求独立页面接口
-import axios from 'axios'
-export const AxiosGetPage = () => {
-  return axios.get('api/page?limit=4')
+import request from '../request'
+
+export const RequestGetPage = () => {
+  return request.get('api/page', {
+    params: {
+      limit: 4
+    }
+  })
 }
