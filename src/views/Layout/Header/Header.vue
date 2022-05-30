@@ -1,5 +1,5 @@
 <template>
-  <div class="Header__container">
+  <div class="Header__container shadow-sm">
     <div class="Header__cont">
       <div class="row">
         <!-- 导航栏 -->
@@ -68,6 +68,7 @@ export default {
     // 初始化vuex
     const store = useStore()
     useGetPageEffect()
+
     const search = () => {
       console.log('search')
     }
