@@ -29,7 +29,7 @@ request.interceptors.request.use(value => {
 
 // 响应拦截器
 request.interceptors.response.use(response => {
-  if (response.data.code !== 200) {
+  if (response.data.code !== 200 && response.data.code !== 400 && response.data.code !== 403) {
     ElNotification({
       title: '错误',
       message: 'API 请求错误，请查看 token 是否填写正确',

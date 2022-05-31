@@ -24,6 +24,17 @@ export default createStore({
       code: '',
       data: {},
       msg: ''
+    },
+    // 文章相关的数据
+    article: {
+      code: '',
+      data: {},
+      msg: ''
+    },
+    LoginInfo: {
+      'login-token': '',
+      user: {}
+
     }
   },
   getters: {
@@ -35,6 +46,9 @@ export default createStore({
     },
     optionsDataSiteOpt (state) {
       return state.options.data.site.opt
+    },
+    articleData (state) {
+      return state.article.data
     }
   },
   mutations: {

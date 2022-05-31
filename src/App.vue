@@ -1,12 +1,13 @@
 <template>
   <router-view></router-view>
+  <el-backtop :right="50" :bottom="50" />
 </template>
 
 <script>
 import { RequestGetOptions } from '@/utils/Options/GetOptions'
 import { useStore } from 'vuex'
 // 页面选项请求 + 页面修改
-const documentRevise = () => {
+const useDocumentReviseEffect = () => {
   const store = useStore()
   // 修改页面标题，描述,关键词...
   const documentOptions = () => {
@@ -29,7 +30,7 @@ const documentRevise = () => {
 }
 export default {
   setup () {
-    documentRevise()
+    useDocumentReviseEffect()
   }
 }
 </script>

@@ -1,45 +1,32 @@
 <template>
   <div class="Header__container shadow-sm">
     <div class="Header__cont">
-      <div class="row">
-        <!-- 导航栏 -->
-        <div class="col-9 Header__nav">
-          <!-- 左侧LOGO -->
-          <a href="https://www.xxhzm.cn" class="Header__logo"><img :src="store.getters.logo"></a>
-          <ul class="">
-            <li>
-              <router-link to="/">首页</router-link>
-            </li>
-            <li v-for="item in store.getters.page" :key="item.id">
-              <router-link to="">{{ item.title }}</router-link>
-            </li>
-          </ul>
-          <div class="Header__search">
-            <input type="text" placeholder="请输入搜索内容..." @keyup.enter="search">
-            <i class="bi bi-search" @click="search"></i>
-          </div>
+      <div class="Header__top">
+        <a href="https://www.xxhzm.cn" class="Header__logo"><img :src="store.getters.logo"></a>
+        <div class="Header__search">
+          <input type="text" placeholder="请输入搜索内容..." @keyup.enter="search">
+          <i class="bi bi-search" @click="search"></i>
         </div>
-        <!-- 右侧功能页 -->
-        <div class="col Header__right">
-          <ul>
-            <li>
-              <router-link to="">
-                <img src="@/assets/images/login.png" alt="">
-                登录
-              </router-link>
-            </li>
-            <li>
-              <router-link to="">
-                <img src="@/assets/images/register.png" alt="">
-                注册
-              </router-link>
-            </li>
-            <li>
-              <router-link to="">
-                <img src="@/assets/images/announcement.png" alt="">
-              </router-link>
-            </li>
-          </ul>
+      </div>
+      <div class="Header__bottom">
+        <ul class="Header__bottom__left">
+          <li>
+            <router-link to="/">首页</router-link>
+          </li>
+          <li v-for="item in store.getters.page" :key="item.id">
+            <router-link to="">{{ item.title }}</router-link>
+          </li>
+        </ul>
+        <div class="Header__bottom__right">
+          <div class="d-inline me-3">
+            <el-switch v-model="value" active-color="#f3f4f6" inactive-color="#6c757d" />
+          </div>
+
+          <el-button><img src="@/assets/images/statistics.png" alt="">统计</el-button>
+
+          <router-link to="/login" class="d-inline ms-3">
+            <el-button><img src="@/assets/images/login.png" alt="">登陆</el-button>
+          </router-link>
         </div>
       </div>
     </div>
@@ -47,6 +34,7 @@
 </template>
 
 <script>
+import { ref } from 'vue'
 import { useStore } from 'vuex'
 import { RequestGetPage } from '@/utils/Page/GetPage'
 
@@ -73,8 +61,11 @@ export default {
       console.log('search')
     }
 
+    const value = ref(false)
+
     return {
       store,
+      value,
       search
     }
   }
