@@ -1,5 +1,5 @@
 <template>
-  <div class="ArticleContent__container shadow-sm">
+  <div class="ArticleContent__container shadow">
     <h2 class="ArticleContent__title">
       <router-link to="">{{ article.title }}</router-link>
     </h2>
@@ -29,5 +29,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url('@/assets/Less/Layout/ArticleContent.less');
+@import url('@/assets/Less/Index/ArticleContent.less');
 </style>

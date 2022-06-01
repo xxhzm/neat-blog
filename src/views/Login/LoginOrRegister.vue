@@ -36,10 +36,10 @@
         <el-form-item>
           <el-input v-model="registerInfo.email" placeholder="电子邮箱" />
         </el-form-item>
-        <el-button @click="GetVerifyCode">获取验证码</el-button>
         <el-form-item class="mt-4">
           <el-input v-model="registerInfo.code" placeholder="验证码" />
         </el-form-item>
+        <el-button @click="GetVerifyCode">获取验证码</el-button>
         <p class="tips mt-3">
           <el-switch v-model="registerInfo.agreement" size="small" class="pe-2" />我同意用户协议
         </p>
@@ -57,13 +57,14 @@ import { useRouter } from 'vue-router'
 import { ElNotification } from 'element-plus'
 import { RequestPostLogin } from '@/utils/LoginOrRegister/PostLogin'
 // 登录相关
-const useLoginEffect = (ButtonStatus) => {
+const useLoginEffect = (router, ButtonStatus) => {
   const store = useStore()
+
   // 登录的信息
   const loginInfo = reactive({
     username: localStorage.getItem('username') ? localStorage.getItem('username') : '',
     password: localStorage.getItem('password') ? localStorage.getItem('password') : '',
-    saveLoginInfo: false
+    saveLoginInfo: !!localStorage.getItem('password')
   })
 
   // 登录
@@ -98,10 +99,14 @@ const useLoginEffect = (ButtonStatus) => {
     // 将数据转存到 vuex 中
     store.dispatch('LoginInfo', res.data)
     store.dispatch('LoginInfoToken', Object.values(res.data)[0])
+
     // 判断是否需要记住用户名密码
     if (loginInfo.saveLoginInfo === true) {
       localStorage.setItem('username', loginInfo.username)
       localStorage.setItem('password', loginInfo.password)
+    } else {
+      localStorage.removeItem('username')
+      localStorage.removeItem('password')
     }
 
     ElNotification({
@@ -112,13 +117,15 @@ const useLoginEffect = (ButtonStatus) => {
     })
 
     ButtonStatus.value = false
+    // 登录成功返回首页
+    router.push('/')
   }
 
   return { login, loginInfo }
 }
 
 // 注册相关
-const useRegisterEffect = (ButtonStatus) => {
+const useRegisterEffect = (router, ButtonStatus) => {
   const registerInfo = reactive({
     username: '',
     password: '',
@@ -183,9 +190,9 @@ export default {
     const ButtonStatus = ref(false)
 
     // 登录
-    const { loginInfo, login } = useLoginEffect(ButtonStatus)
+    const { loginInfo, login } = useLoginEffect(router, ButtonStatus)
     // 注册
-    const { registerInfo, GetVerifyCode, register } = useRegisterEffect(ButtonStatus)
+    const { registerInfo, GetVerifyCode, register } = useRegisterEffect(router, ButtonStatus)
 
     return {
       goBack,

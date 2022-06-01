@@ -2,7 +2,7 @@
   <div class="Header__container shadow-sm">
     <div class="Header__cont">
       <div class="Header__top">
-        <a href="https://www.xxhzm.cn" class="Header__logo"><img :src="store.getters.logo"></a>
+        <a href="/" class="Header__logo"><img :src="store.getters.logo"></a>
         <div class="Header__search">
           <input type="text" placeholder="请输入搜索内容..." @keyup.enter="search">
           <i class="bi bi-search" @click="search"></i>
@@ -24,9 +24,10 @@
 
           <el-button><img src="@/assets/images/statistics.png" alt="">统计</el-button>
 
-          <router-link to="/login" class="d-inline ms-3">
-            <el-button><img src="@/assets/images/login.png" alt="">登陆</el-button>
+          <router-link to="/login" class="d-inline ms-3" v-if="store.state.LoginInfo.token === ''">
+            <el-button ><img src="@/assets/images/login.png" alt="" >登陆</el-button>
           </router-link>
+            <el-button v-else @click="logout"><img src="@/assets/images/login.png" alt="">退出登录</el-button>
         </div>
       </div>
     </div>
@@ -66,12 +67,18 @@ export default {
       console.log('search')
     }
 
+    // 退出登录
+    const logout = () => {
+      store.commit('logout')
+    }
+
     const value = ref(false)
 
     return {
       store,
       value,
-      search
+      search,
+      logout
     }
   }
 }

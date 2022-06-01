@@ -29,14 +29,14 @@ request.interceptors.request.use(value => {
 
 // 响应拦截器
 request.interceptors.response.use(response => {
-  if (response.data.code !== 200 && response.data.code !== 400 && response.data.code !== 403) {
+  if (response.data.msg === '禁止非法操作！') {
     ElNotification({
       title: '错误',
       message: 'API 请求错误，请查看 token 是否填写正确',
       type: 'error',
       duration: 0
     })
-    return response
+    return false
   }
   return response
 }, error => {

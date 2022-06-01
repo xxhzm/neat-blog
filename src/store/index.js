@@ -35,6 +35,11 @@ export default createStore({
       token: '',
       'login-token': '',
       user: {}
+    },
+    AllTag: {
+      code: '',
+      data: {},
+      msg: ''
     }
   },
   getters: {
@@ -71,6 +76,16 @@ export default createStore({
     },
     LoginInfoToken (state, data) {
       state.LoginInfo.token = data
+    },
+    logout (state) {
+      state.LoginInfo = {
+        token: '',
+        'login-token': '',
+        user: {}
+      }
+    },
+    AllTag (state, data) {
+      state.AllTag = data
     }
   },
   actions: {
@@ -88,6 +103,9 @@ export default createStore({
     },
     LoginInfoToken (store, data) {
       store.commit('LoginInfoToken', data)
+    },
+    AllTag (store, data) {
+      store.commit('AllTag', data)
     }
   },
   modules: {
