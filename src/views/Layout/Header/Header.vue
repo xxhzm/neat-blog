@@ -55,7 +55,12 @@ export default {
   setup () {
     // 初始化vuex
     const store = useStore()
-    useGetPageEffect()
+
+    // 判断 vuex 中页面是否为空
+    // 如果为空，则调用 API 获取页面
+    if (store.state.page.code === '') {
+      useGetPageEffect()
+    }
 
     const search = () => {
       console.log('search')

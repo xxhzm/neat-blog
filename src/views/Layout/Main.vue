@@ -22,7 +22,7 @@ const useArticleEffect = () => {
 
   const GetArticle = async () => {
     const { data: res } = await RequestGetArticle()
-    store.state.article = res
+    store.dispatch('article', res)
   }
 
   GetArticle()
@@ -30,8 +30,11 @@ const useArticleEffect = () => {
 export default {
   setup () {
     const store = useStore()
-
-    useArticleEffect()
+    // 判断 vuex 中文章内容是否为空
+    // 如果为空，则调用 API 获取文章
+    if (store.state.article.code === '') {
+      useArticleEffect()
+    }
 
     return { store }
   },

@@ -32,9 +32,9 @@ export default createStore({
       msg: ''
     },
     LoginInfo: {
+      token: '',
       'login-token': '',
       user: {}
-
     }
   },
   getters: {
@@ -62,6 +62,15 @@ export default createStore({
     },
     options (state, data) {
       state.options = data
+    },
+    article (state, data) {
+      state.article = data
+    },
+    LoginInfo (state, data) {
+      state.LoginInfo = data
+    },
+    LoginInfoToken (state, data) {
+      state.LoginInfo.token = data
     }
   },
   actions: {
@@ -70,6 +79,15 @@ export default createStore({
     },
     options (store, data) {
       store.commit('options', data)
+    },
+    article (store, data) {
+      store.commit('article', data)
+    },
+    LoginInfo (store, data) {
+      store.commit('LoginInfo', data)
+    },
+    LoginInfoToken (store, data) {
+      store.commit('LoginInfoToken', data)
     }
   },
   modules: {
