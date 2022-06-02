@@ -1,7 +1,8 @@
 <template>
-  <ArticleContent v-for="item in store.getters.articleData.data" :key="item.id" :articleDate="item"></ArticleContent>
-  <el-pagination class="mt-5" background layout="prev, pager, next" :page-size="5" :total="count" hide-on-single-page @current-change="ArticlePageChange" />
-
+  <div class="Index__container">
+    <ArticleContent v-for="item in store.getters.articleData.data" :key="item.id" :articleDate="item" v-loading="loading" ></ArticleContent>
+    <el-pagination class="mt-5 shadow pagination" background layout="prev, pager, next" :page-size="5" :total="count" hide-on-single-page @current-change="ArticlePageChange" />
+  </div>
 </template>
 
 <script>
@@ -25,6 +26,7 @@ const useArticleEffect = () => {
 export default {
   setup () {
     const store = useStore()
+    const loading = ref(false)
 
     // 判断 vuex 中文章内容是否为空
     // 如果为空，则调用 API 获取文章
@@ -34,8 +36,15 @@ export default {
 
     // 分页加载
     const ArticlePageChange = async (val) => {
+      loading.value = true
+      // 操作页面回到顶部
+      window.scroll({
+        top: 0
+      })
+
       const { data: res } = await RequestGetArticle(val)
       store.dispatch('article', res)
+      loading.value = false
     }
 
     // 延迟加载分页数量
@@ -46,6 +55,7 @@ export default {
 
     return {
       store,
+      loading,
       count,
       ArticlePageChange
     }
@@ -55,3 +65,7 @@ export default {
   }
 }
 </script>
+
+<style lang="less">
+@import url('@/assets/Less/Index/Index.less');
+</style>

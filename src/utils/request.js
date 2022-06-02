@@ -4,7 +4,7 @@ import { ElNotification } from 'element-plus'
 
 // 自定义 request 实例
 const request = axios.create({
-  timeout: 2000
+  timeout: 5000
 });
 
 // 获取配置文件,并存到 vuex 中

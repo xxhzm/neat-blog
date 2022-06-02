@@ -4,16 +4,22 @@
       <router-link to="">{{ article.title }}</router-link>
     </h2>
     <div class="ArticleContent__content">
-      <div class="ArticleContent__text">
+      <!-- 判断是否有图，来决定显示类名 -->
+      <div :class="article.img_src? 'ArticleContent__text ArticleContent__text-tow': 'ArticleContent__text'">
         {{ article.description }}
       </div>
       <img v-if="article.img_src" :src="article.img_src" class="ArticleContent__img">
+    </div>
+    <div class="ArticleContent__footer">
+      <p>发布于<span class="ps-2">{{ article.create_time }}</span></p><i>/</i>
+      <p><span>{{ views }}</span>阅读</p><i>/</i>
+      <p><span>{{ article.expand.comments.count }}</span>评论</p>
     </div>
   </div>
 </template>
 
 <script>
-import { toRefs } from 'vue'
+import { toRefs, computed } from 'vue'
 export default {
   props: {
     articleDate: {
@@ -23,7 +29,17 @@ export default {
   },
   setup (props) {
     const { articleDate: article } = toRefs(props)
-    return { article }
+
+    const views = computed(() => {
+      // 阅读量
+      if (article.value.views === null) {
+        return 0
+      } else {
+        return article.value.views
+      }
+    })
+
+    return { article, views }
   }
 }
 </script>

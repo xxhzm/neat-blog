@@ -39,5 +39,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url('@/assets/Less/Sidebay/AllTag.less');
+@import url('@/assets/Less/Layout/Sidebay/AllTag.less');
 </style>

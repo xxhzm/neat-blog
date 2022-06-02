@@ -1,4 +1,5 @@
 .ArticleContent__container {
+  position: relative;
   height: 200px;
   background: #fff;
   margin-top: 20px;
@@ -9,9 +10,9 @@
     float: left;
     width: 80%;
     font-size: 18px;
-    overflow:hidden;
-    white-space:nowrap;
-    text-overflow:ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     a {
       text-decoration: none;
       color: #000;
@@ -21,20 +22,46 @@
     }
   }
   .ArticleContent__content {
+    position: relative;
     display: flex;
     font-size: 14px;
     margin-top: 40px;
     color: #999;
-    .ArticleContent__text{
-      width: 100%;
+    .ArticleContent__text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
     }
-    .ArticleContent__img{
-      position: relative;
+    .ArticleContent__text-tow {
+      width: calc(100% - 210px);
+    }
+    .ArticleContent__img {
+      position: absolute;
+      right: 0;
       top: -30px;
       max-width: 200px;
       max-height: 150px;
       margin-left: 30px;
       border-radius: 7px;
+    }
+  }
+  .ArticleContent__footer {
+    position: absolute;
+    bottom: 20px;
+    color: #777;
+    font-size: 12px;
+    p{
+      display: inline;
+      span{
+        // padding: 2px;
+      }
+
+    }
+    i{
+      font-style: normal;
+      padding: 5px;
     }
   }
 }

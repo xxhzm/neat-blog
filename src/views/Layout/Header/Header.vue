@@ -31,6 +31,13 @@
         </div>
       </div>
     </div>
+    <!-- 统计信息 -->
+    <div class="group-info">
+      <p>123</p>
+      <p>123</p>
+      <p>123</p>
+      <p>123</p>
+    </div>
   </div>
 </template>
 
@@ -86,5 +93,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url('@/assets/Less/Header/Header.less');
+@import url('@/assets/Less/Layout/Header/Header.less');
 </style>
