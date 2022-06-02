@@ -31,15 +31,37 @@ export default createStore({
       data: {},
       msg: ''
     },
+    // 登录信息
     LoginInfo: {
       token: '',
       'login-token': '',
       user: {}
     },
+    // 所有标签
     AllTag: {
       code: '',
       data: {},
       msg: ''
+    },
+    EchartsDisplay: false,
+    Group: {
+      code: '',
+      article: {
+        date: [],
+        count: []
+      },
+      comments: {
+        date: [],
+        count: []
+      },
+      links: {
+        date: [],
+        count: []
+      },
+      tag: {
+        date: [],
+        count: []
+      }
     }
   },
   getters: {
@@ -86,6 +108,9 @@ export default createStore({
     },
     AllTag (state, data) {
       state.AllTag = data
+    },
+    Group (state, data) {
+      state.Group = data
     }
   },
   actions: {
@@ -106,6 +131,9 @@ export default createStore({
     },
     AllTag (store, data) {
       store.commit('AllTag', data)
+    },
+    Group (store, data) {
+      store.commit('Group', data)
     }
   },
   modules: {

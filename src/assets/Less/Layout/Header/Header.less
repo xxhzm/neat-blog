@@ -64,13 +64,14 @@
           }
         }
       }
-      .Header__bottom__right{
+      .Header__bottom__right {
+        position: relative;
         line-height: 37px;
         float: right;
-        a{
+        a {
           text-decoration: none;
         }
-        button{
+        button {
           width: 85px;
           height: 30px;
           outline: none;
@@ -78,11 +79,43 @@
           background: #f3f4f6;
           color: #45484f;
           font-size: 13px;
-          img{
+          img {
             height: 13px;
             margin-right: 5px;
           }
         }
+      }
+    }
+  }
+
+  #group-info {
+    display: flex;
+    justify-content: space-between;
+    flex-flow: wrap;
+    position: absolute;
+    left: -500px;
+    top: 50px;
+    z-index: 9999;
+    width: 650px;
+    height: 500px;
+    padding: 0 20px;
+    background: #fff;
+    .chart {
+      position: relative;
+      top: 10px;
+      // left: 15px;
+      // right: 15px;
+      width: 300px;
+      height: 250px;
+      h3 {
+        position: absolute;
+        font-size: 16px;
+      }
+      .dom {
+        position: absolute;
+        top: -20px;
+        width: 300px;
+        height: 250px;
       }
     }
   }

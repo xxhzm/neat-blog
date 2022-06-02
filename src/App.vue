@@ -26,7 +26,7 @@ const useDocumentReviseEffect = () => {
 
   setTimeout(() => {
     GetOptions()
-  }, 500)
+  }, 300)
 }
 export default {
   setup () {
