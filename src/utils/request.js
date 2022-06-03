@@ -22,8 +22,8 @@ request.interceptors.request.use(value => {
   // 如果 vuex 中的 token 不为空，则每次请求都带上它
   if (store.state.config.token !== '') {
     value.params.token = store.state.config.token
-    return value
   }
+
   return value
 })
 

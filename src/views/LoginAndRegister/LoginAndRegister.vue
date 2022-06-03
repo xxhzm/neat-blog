@@ -15,7 +15,7 @@
           <el-switch v-model="loginInfo.saveLoginInfo" size="small" class="pe-2" />记住密码
         </p>
       </el-form>
-      <el-button type="primary" class="d-block" @click="login" :loading="ButtonStatus">点击登录</el-button>
+      <el-button type="primary" class="d-block" @click="login" :loading="loginOrRegisterButtonStatus">点击登录</el-button>
       <p class="text mt-4">还没有账号?<span class="ps-2" @click="LoginIsRegisterChange">注册</span></p>
     </div>
 
@@ -25,13 +25,10 @@
       <p class="text m2-5">请填写正确的信息，方便找回密码！</p>
       <el-form label-position="top" label-width="100px" :model="registerInfo" size="large">
         <el-form-item>
-          <el-input v-model="registerInfo.username" placeholder="用户名" />
+          <el-input v-model="registerInfo.nickname" placeholder="用户名" />
         </el-form-item>
         <el-form-item>
           <el-input v-model="registerInfo.password" placeholder="密码" show-password />
-        </el-form-item>
-        <el-form-item>
-          <el-input v-model="registerInfo.confirmPassword" placeholder="确认密码" show-password />
         </el-form-item>
         <el-form-item>
           <el-input v-model="registerInfo.email" placeholder="电子邮箱" />
@@ -39,12 +36,12 @@
         <el-form-item class="mt-4">
           <el-input v-model="registerInfo.code" placeholder="验证码" />
         </el-form-item>
-        <el-button @click="GetVerifyCode">获取验证码</el-button>
+        <el-button @click="GetVerifyCode" :loading="verifyCodeButtonStatus" >获取验证码</el-button>
         <p class="tips mt-3">
           <el-switch v-model="registerInfo.agreement" size="small" class="pe-2" />我同意用户协议
         </p>
       </el-form>
-      <el-button type="primary" class="d-block" @click="register" :loading="ButtonStatus">点击注册</el-button>
+      <el-button type="primary" class="d-block" @click="register" :loading="loginOrRegisterButtonStatus">点击注册</el-button>
       <p class="text mt-4">已有账号?<span class="ps-2" @click="LoginIsRegisterChange">登录</span></p>
     </div>
   </div>
@@ -55,9 +52,12 @@ import { reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { ElNotification } from 'element-plus'
-import { RequestPostLogin } from '@/utils/LoginOrRegister/PostLogin'
+import { RequestPostLogin } from '@/utils/LoginAndRegister/PostLogin'
+import { RequestPostRegister } from '@/utils/LoginAndRegister/PostRegister'
+import { RequestPostVerifyCode } from '@/utils/LoginAndRegister/PostVerifyCode'
+
 // 登录相关
-const useLoginEffect = (router, ButtonStatus) => {
+const useLoginEffect = (router, loginOrRegisterButtonStatus) => {
   const store = useStore()
 
   // 登录的信息
@@ -70,7 +70,7 @@ const useLoginEffect = (router, ButtonStatus) => {
   // 登录
   const login = async () => {
     // 更改按钮状态，禁止点击
-    ButtonStatus.value = true
+    loginOrRegisterButtonStatus.value = true
 
     // 判断用户名密码是否为空
     if (loginInfo.username === '' || loginInfo.password === '') {
@@ -80,7 +80,7 @@ const useLoginEffect = (router, ButtonStatus) => {
         type: 'error',
         duration: 3500
       })
-      ButtonStatus.value = false
+      loginOrRegisterButtonStatus.value = false
       return false
     }
 
@@ -93,7 +93,7 @@ const useLoginEffect = (router, ButtonStatus) => {
         type: 'error',
         duration: 3500
       })
-      ButtonStatus.value = false
+      loginOrRegisterButtonStatus.value = false
       return false
     }
     // 将数据转存到 vuex 中
@@ -116,7 +116,7 @@ const useLoginEffect = (router, ButtonStatus) => {
       duration: 3500
     })
 
-    ButtonStatus.value = false
+    loginOrRegisterButtonStatus.value = false
     // 登录成功返回首页
     router.push('/')
   }
@@ -125,23 +125,61 @@ const useLoginEffect = (router, ButtonStatus) => {
 }
 
 // 注册相关
-const useRegisterEffect = (router, ButtonStatus) => {
+const useRegisterEffect = (router, loginOrRegisterButtonStatus, verifyCodeButtonStatus) => {
   const registerInfo = reactive({
-    username: '',
+    nickname: '',
     password: '',
-    confirmPassword: '',
     email: '',
     code: '',
     agreement: false
   })
 
   // 获取验证码
-  const GetVerifyCode = () => {
+  const GetVerifyCode = async () => {
     if (registerInfo.email === '') {
       ElNotification({
         title: '警告',
         message: '邮箱不能为空',
-        type: 'warning',
+        type: 'error',
+        duration: 3500
+      })
+
+      return false
+    }
+
+    // 正则表达式验证邮箱是否正确
+    if (registerInfo.email.search(/^\w+((-\w+)|(\.\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/) === -1) {
+      ElNotification({
+        title: '警告',
+        message: '请确认邮箱格式是否正确',
+        type: 'error',
+        duration: 3500
+      })
+
+      return false
+    }
+    // 更改验证码状态，禁止用户重复获取验证码
+    verifyCodeButtonStatus.value = true
+
+    const { data: res } = await RequestPostVerifyCode(registerInfo.email)
+    // 判断接口返回的信息，是否发送成功验证码
+    if (res.msg === '验证码已发送至邮箱，5分钟内有效！' || res.msg === '验证码已发送至邮箱5分钟内有效！') {
+      ElNotification({
+        title: '成功',
+        message: res.msg,
+        type: 'success',
+        duration: 3500
+      })
+
+      // 设置 60 秒后可以继续获取验证码
+      setTimeout(() => {
+        verifyCodeButtonStatus.value = false
+      }, 60000)
+    } else {
+      ElNotification({
+        title: '失败',
+        message: res.msg,
+        type: 'error',
         duration: 3500
       })
     }
@@ -149,21 +187,57 @@ const useRegisterEffect = (router, ButtonStatus) => {
   // 注册
   const register = async () => {
     // 更改按钮状态，禁止点击
-    ButtonStatus.value = true
+    loginOrRegisterButtonStatus.value = true
 
-    // 判断用户是否同意协议
-    if (registerInfo.agreement === false) {
-      ElNotification({
-        title: '警告',
-        message: '请同意用户协议',
-        type: 'warning',
-        duration: 3500
-      })
-      ButtonStatus.value = false
+    // if 判断函数 内容 条件 错误弹窗信息
+    const ifInfo = (content, condition, msg) => {
+      if (content === condition) {
+        ElNotification({
+          title: '错误',
+          message: msg,
+          type: 'error',
+          duration: 3500
+        })
+
+        loginOrRegisterButtonStatus.value = false
+
+        return false
+      } else {
+        return true
+      }
+    }
+
+    // 判断 ifInfo 返回的内容是否为 false 如果为 false 则终止执行
+    if (
+      ifInfo(registerInfo.nickname, '', '请输入用户名') === false ||
+      ifInfo(registerInfo.password, '', '请输入密码') === false ||
+      ifInfo(registerInfo.email, '', '请输入邮箱') === false ||
+      ifInfo(registerInfo.agreement, false, '请同意用户协议') === false ||
+      ifInfo(registerInfo.email.search(/^\w+((-\w+)|(\.\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/), -1, '请确认邮箱格式是否正确') === false
+    ) {
       return false
     }
 
-    ButtonStatus.value = false
+    const { data: res } = await RequestPostRegister(registerInfo)
+    if (res.msg === 'ok') {
+      ElNotification({
+        title: '成功',
+        message: '注册成功，正在跳转登录',
+        type: 'success',
+        duration: 3500
+      })
+      // 刷新页面
+      router.go(0)
+    } else {
+      ElNotification({
+        title: '失败',
+        message: '注册失败，正在跳转首页',
+        type: 'success',
+        duration: 3500
+      })
+      // 返回首页
+      router.push('/')
+    }
   }
 
   return { registerInfo, GetVerifyCode, register }
@@ -186,17 +260,20 @@ export default {
       router.push('/')
     }
 
+    const verifyCodeButtonStatus = ref(false)
     // 登录 | 注册 按钮状态
-    const ButtonStatus = ref(false)
+    const loginOrRegisterButtonStatus = ref(false)
 
     // 登录
-    const { loginInfo, login } = useLoginEffect(router, ButtonStatus)
+    const { loginInfo, login } = useLoginEffect(router, loginOrRegisterButtonStatus)
+
     // 注册
-    const { registerInfo, GetVerifyCode, register } = useRegisterEffect(router, ButtonStatus)
+    const { registerInfo, GetVerifyCode, register } = useRegisterEffect(router, loginOrRegisterButtonStatus, verifyCodeButtonStatus)
 
     return {
       goBack,
-      ButtonStatus,
+      loginOrRegisterButtonStatus,
+      verifyCodeButtonStatus,
 
       LoginIsRegister,
       LoginIsRegisterChange,

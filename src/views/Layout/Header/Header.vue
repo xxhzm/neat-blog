@@ -134,6 +134,7 @@ const useEchartsEffect = (store) => {
 
     // 图表函数
     const chart = (dom, date, count) => {
+      // DOM 元素, 时间, 数量
       const Chart = echarts.init(document.getElementById(dom))
 
       const option = {

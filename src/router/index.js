@@ -25,7 +25,7 @@ const routes = [
     path: '/login',
     name: 'LoginOrRegister',
     title: '登陆 | 注册',
-    component: () => import('@/views/Login/LoginOrRegister')
+    component: () => import('@/views/LoginAndRegister/LoginAndRegister')
   }
 ]
 

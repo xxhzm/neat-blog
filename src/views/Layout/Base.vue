@@ -23,7 +23,6 @@
 import Header from './Header/Header'
 import Sidebar from './Sidebar/Sidebar'
 import Footer from './Footer/Footer'
-
 </script>
 
 <style lang="less">
