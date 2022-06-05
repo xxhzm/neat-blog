@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="Sidebar__container">
     <AllTag />
   </div>
 </template>
@@ -8,6 +8,5 @@
 import AllTag from '@/components/Sidebay/AllTag'
 </script>
 
-<style lang="less" scoped>
-
+<style lang="less">
 </style>

@@ -14,6 +14,13 @@ const routes = [
         component: () => import('@/views/Index/Index')
       },
       {
+        path: '/article/:id',
+        name: 'Article',
+        title: '文章',
+        component: () => import('@/views/Article/Article'),
+        props: true
+      },
+      {
         path: '/tag/:id',
         name: 'Tag',
         title: '标签',

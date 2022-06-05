@@ -18,10 +18,6 @@
           </li>
         </ul>
         <div class="Header__bottom__right">
-          <div class="d-inline me-3">
-            <el-switch v-model="value" active-color="#f3f4f6" inactive-color="#6c757d" />
-          </div>
-
           <el-button @click="ShowOrHideEcharts" class="echartsButton"><img src="@/assets/images/statistics.png">统计</el-button>
           <!-- 统计信息 -->
           <div class="shadow" id="group-info" v-if="store.state.EchartsDisplay">
@@ -199,9 +195,6 @@ export default {
       store.commit('logout')
     }
 
-    // 深夜模式开关
-    const value = ref(false)
-
     const { EchartsDisplay, ShowOrHideEcharts } = useEchartsEffect(store)
 
     // 组件销毁时，关闭统计 DOM 元素显示
@@ -211,7 +204,6 @@ export default {
 
     return {
       store,
-      value,
       EchartsDisplay,
       ShowOrHideEcharts,
       search,

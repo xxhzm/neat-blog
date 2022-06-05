@@ -1,7 +1,7 @@
 <template>
   <div class="ArticleContent__container shadow">
     <h2 class="ArticleContent__title">
-      <router-link to="">{{ article.title }}</router-link>
+      <router-link :to="/article/ + article.id">{{ article.title }}</router-link>
     </h2>
     <div class="ArticleContent__content">
       <!-- 判断是否有图，来决定显示类名 -->

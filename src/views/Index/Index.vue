@@ -14,9 +14,9 @@ import { ref } from 'vue'
 // 文章相关
 const useArticleEffect = () => {
   const store = useStore()
-
+  // 获取
   const GetArticle = async () => {
-    const { data: res } = await RequestGetArticle()
+    const { data: res } = await RequestGetArticle(1)
     store.dispatch('article', res)
   }
 
