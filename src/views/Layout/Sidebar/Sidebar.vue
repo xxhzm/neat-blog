@@ -7,6 +7,3 @@
 <script setup>
 import AllTag from '@/components/Sidebay/AllTag'
 </script>
-
-<style lang="less">
-</style>

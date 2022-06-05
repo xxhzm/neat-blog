@@ -3,7 +3,7 @@
     <h4 class="AllTag__title">标签云</h4>
     <div>
       <router-link v-for="item in store.state.AllTag.data.data" :key="item" :to="/tag/+item.id">
-        <el-tag>
+        <el-tag v-color>
           {{ item.name }}
         </el-tag>
       </router-link>
@@ -32,6 +32,18 @@ export default {
 
     return {
       store
+    }
+  },
+  directives: {
+    color: {
+      // tag 按钮颜色随机
+      mounted (el) {
+        const type = ['', 'success', 'info', 'warning', 'danger']
+        const x = Math.floor(Math.random() * type.length)
+        if (x !== 0) {
+          el.className += ' el-tag--' + type[x]
+        }
+      }
     }
   }
 }

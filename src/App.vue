@@ -4,33 +4,44 @@
 </template>
 
 <script>
-import { RequestGetOptions } from '@/utils/Options/GetOptions'
 import { useStore } from 'vuex'
-// 页面选项请求 + 页面修改
-const useDocumentReviseEffect = () => {
-  const store = useStore()
-  // 修改页面标题，描述,关键词...
-  const documentOptions = () => {
-    document.title = store.getters.optionsDataSiteOpt.title
-    const meta = document.getElementsByTagName('meta')
-    meta.keywords.content = store.getters.optionsDataSiteOpt.keywords
-    meta.description.content = store.getters.optionsDataSiteOpt.description
-  }
+import { RequestGetOptions } from '@/utils/Options/GetOptions'
+import { documentUpdate } from '@/utils/DocumentUpdate/DocumentUpdate'
 
+// 页面选项请求 + 页面修改
+const useDocumentReviseEffect = (store) => {
   // 读取页面的配置项
   const GetOptions = async () => {
-    const { data: res } = await RequestGetOptions()
-    store.dispatch('options', res)
-    documentOptions()
+    const { data: { data: res } } = await RequestGetOptions()
+
+    // 将数据转为 JSON 存到 localStorage
+    // 并修改页面的内容
+    const result = JSON.stringify(res)
+
+    localStorage.setItem('options', result)
+
+    documentUpdate(res.site.opt.title, res.site.opt.description, res.site.opt.keywords)
+
+    store.commit('Options', res)
   }
 
-  setTimeout(() => {
+  if (localStorage.getItem('options') === '') {
     GetOptions()
-  }, 500)
+  } else {
+    const options = JSON.parse(localStorage.getItem('options'))
+
+    documentUpdate(options.site.opt.title, options.site.opt.description, options.site.opt.keywords)
+
+    store.commit('Options', options)
+  }
 }
 export default {
   setup () {
-    useDocumentReviseEffect()
+    const store = useStore()
+
+    setTimeout(() => {
+      useDocumentReviseEffect(store)
+    }, 500)
   }
 }
 </script>

@@ -10,15 +10,6 @@ export default createStore({
       logo: ''
 
     },
-    // 页面配置
-    options: {
-      code: '',
-      data: {
-        site: {},
-        webmaster: {}
-      },
-      msg: ''
-    },
     // 独立页面的数据
     page: {
       code: '',
@@ -43,7 +34,9 @@ export default createStore({
       data: {},
       msg: ''
     },
+    // 统计的显示状态
     EchartsDisplay: false,
+    // 聚合信息
     Group: {
       code: '',
       article: {
@@ -62,6 +55,10 @@ export default createStore({
         date: [],
         count: []
       }
+    },
+    // 页面的配置项
+    Options: {
+
     }
   },
   getters: {
@@ -70,9 +67,6 @@ export default createStore({
     },
     page (state) {
       return state.page.data.data
-    },
-    optionsDataSiteOpt (state) {
-      return state.options.data.site.opt
     },
     articleData (state) {
       return state.article.data
@@ -86,9 +80,6 @@ export default createStore({
     // 独立页面
     page (state, data) {
       state.page = data
-    },
-    options (state, data) {
-      state.options = data
     },
     article (state, data) {
       state.article = data
@@ -111,14 +102,14 @@ export default createStore({
     },
     Group (state, data) {
       state.Group = data
+    },
+    Options (state, data) {
+      state.Options = data
     }
   },
   actions: {
     page (store, data) {
       store.commit('page', data)
-    },
-    options (store, data) {
-      store.commit('options', data)
     },
     article (store, data) {
       store.commit('article', data)

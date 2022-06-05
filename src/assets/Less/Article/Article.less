@@ -8,7 +8,7 @@
     overflow: hidden;
     font-size: 22px;
     font-weight: 700;
-    color: #333;
+    color: #555;
     margin-top: 10px;
     margin-bottom: 15px;
     white-space: nowrap;
@@ -31,9 +31,10 @@
   }
   .Article-content{
     margin-top: 80px;
+
     *{
       position: relative;
-      color: #777;
+      color: #666;
       font-size: 14px;
       margin: 0 0 20px 0;
       padding-left: 0;
@@ -45,18 +46,33 @@
       word-break: break-all;
     }
 
-    h1,h2,h3,h4,h5,h6{
-      color: #333 !important;
+    h1,h2,h3{
+      color: #555 !important;
       font-size: 20px;
       font-weight: 700;
     }
 
+    h4,h5,h6{
+      color: #555 !important;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
     strong{
-      color: #666;
+      color: #555;
     }
 
     ol,li{
-      margin-left: 20px;
+      margin-left: 10px;
+    }
+
+    pre{
+      padding: 20px 15px;
+      background: #f3f3f3 !important;
+    }
+
+    img{
+      max-width: 100%;
     }
   }
 }
