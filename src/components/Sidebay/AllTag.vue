@@ -1,5 +1,5 @@
 <template>
-  <div class="AllTag__container shadow" v-if="store.state.AllTag.data.count > 10">
+  <div class="AllTag__container shadow" v-if="store.state.AllTag.data.count > 2">
     <h4 class="AllTag__title">标签云</h4>
     <div>
       <router-link v-for="item in store.state.AllTag.data.data" :key="item" :to="/tag/+item.id">

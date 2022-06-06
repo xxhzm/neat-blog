@@ -58,8 +58,11 @@ export default createStore({
     },
     // 页面的配置项
     Options: {
-
-    }
+      code: '',
+      data: {},
+      msg: ''
+    },
+    currentPage: 1
   },
   getters: {
     logo (state) {
@@ -105,6 +108,9 @@ export default createStore({
     },
     Options (state, data) {
       state.Options = data
+    },
+    currentPage (state, data) {
+      state.currentPage = data
     }
   },
   actions: {
@@ -125,6 +131,9 @@ export default createStore({
     },
     Group (store, data) {
       store.commit('Group', data)
+    },
+    currentPage (store, data) {
+      store.commit('currentPage', data)
     }
   },
   modules: {

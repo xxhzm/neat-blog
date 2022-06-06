@@ -25,7 +25,7 @@ const useDocumentReviseEffect = (store) => {
     store.commit('Options', res)
   }
 
-  if (localStorage.getItem('options') === '') {
+  if (localStorage.getItem('options') === null) {
     GetOptions()
   } else {
     const options = JSON.parse(localStorage.getItem('options'))

@@ -8,17 +8,17 @@
     </div>
     <div class="Article-content" v-html="ArticleData.content"></div>
   </div>
-  <Comment></Comment>
+  <Comment :id="articleId"></Comment>
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, toRefs } from 'vue'
 import Comment from '@/components/Comment/Comment.vue'
 import { RequestGetArticle } from '@/utils/Article/GetArticle'
 import { documentUpdate } from '@/utils/DocumentUpdate/DocumentUpdate'
 
 // 文章相关
-const useArticleEffect = (props) => {
+const useArticleEffect = (id) => {
   // 加载样式
   const loading = ref(true)
 
@@ -31,7 +31,7 @@ const useArticleEffect = (props) => {
 
   // 请求 API
   const GetArticle = async () => {
-    const { data: { data: res } } = await RequestGetArticle(1, props.id)
+    const { data: { data: res } } = await RequestGetArticle(1, id)
     ArticleData.value = res
 
     loading.value = false
@@ -67,12 +67,15 @@ const useArticleEffect = (props) => {
 export default {
   props: ['id'],
   setup (props) {
-    const { loading, ArticleData, views } = useArticleEffect(props)
+    const { id: articleId } = toRefs(props)
+
+    const { loading, ArticleData, views } = useArticleEffect(articleId.value)
 
     return {
       loading,
       ArticleData,
-      views
+      views,
+      articleId
     }
   },
   components: {
