@@ -117,8 +117,9 @@ const useLoginEffect = (router, loginOrRegisterButtonStatus) => {
     })
 
     loginOrRegisterButtonStatus.value = false
-    // 登录成功返回首页
-    router.push('/')
+
+    // 返回上一页
+    router.go(-1)
   }
 
   return { login, loginInfo }
@@ -235,8 +236,9 @@ const useRegisterEffect = (router, loginOrRegisterButtonStatus, verifyCodeButton
         type: 'success',
         duration: 3500
       })
-      // 返回首页
-      router.push('/')
+
+      // 返回上一页
+      router.go(-1)
     }
   }
 

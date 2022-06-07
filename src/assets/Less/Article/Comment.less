@@ -11,7 +11,27 @@
     font-size: 20px;
     font-weight: 700;
   }
-  .Comment__cont {
+  // 评论显示
+  .Comment__get__cont{
+    .Comment__get__cont__null{
+      position: relative;
+      text-align: center;
+      img{
+        width: 200px;
+      }
+      span{
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        transform: translate(-50%);
+        font-size: 13px;
+        color: #666;
+      }
+    }
+  }
+  // 发送评论
+  .Comment__send__cont {
+    border-top: 1px #ccc solid;
     input,
     textarea {
       color: #555;

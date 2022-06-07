@@ -62,7 +62,12 @@ export default createStore({
       data: {},
       msg: ''
     },
-    currentPage: 1
+    currentPage: 1,
+    CommentContent: {
+      code: '',
+      data: {},
+      msg: ''
+    }
   },
   getters: {
     logo (state) {
@@ -111,6 +116,9 @@ export default createStore({
     },
     currentPage (state, data) {
       state.currentPage = data
+    },
+    CommentContent (state, data) {
+      state.CommentContent = data
     }
   },
   actions: {
@@ -134,6 +142,9 @@ export default createStore({
     },
     currentPage (store, data) {
       store.commit('currentPage', data)
+    },
+    CommentContent (store, data) {
+      store.commit('CommentContent', data)
     }
   },
   modules: {
