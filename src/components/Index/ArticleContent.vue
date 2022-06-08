@@ -22,13 +22,13 @@
 import { toRefs, computed } from 'vue'
 export default {
   props: {
-    articleDate: {
+    articleData: {
       type: Object,
       required: true
     }
   },
   setup (props) {
-    const { articleDate: article } = toRefs(props)
+    const { articleData: article } = toRefs(props)
 
     const views = computed(() => {
       // 阅读量

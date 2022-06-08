@@ -12,20 +12,72 @@
     font-weight: 700;
   }
   // 评论显示
-  .Comment__get__cont{
-    .Comment__get__cont__null{
+  .Comment__get__cont {
+    .Comment__get__cont__null {
       position: relative;
       text-align: center;
-      img{
+      img {
         width: 200px;
       }
-      span{
+      span {
         position: absolute;
         bottom: -20px;
         left: 50%;
         transform: translate(-50%);
         font-size: 13px;
         color: #666;
+      }
+    }
+    .Comment__get__cont__content {
+      ul {
+        list-style: none;
+        li {
+          display: flex;
+          img {
+            max-width: 40px;
+            max-height: 40px;
+            border-radius: 7px;
+          }
+          .Comment__get__cont__content__left {
+            padding-right: 10px;
+          }
+          .Comment__get__cont__content__right {
+            p {
+              margin: 0;
+            }
+
+            .Comment__nickname {
+              font-size: 13px;
+              a {
+                margin-right: 5px;
+                color: #666;
+                text-decoration: none;
+              }
+            }
+            .Comment__reply {
+              position: absolute;
+              cursor: pointer;
+              padding: 0.2em 0.6em 0.15em;
+              font-size: 10px;
+              border-radius: 3px;
+              color: #fff !important;
+              background-color: rgb(10, 207, 151);
+            }
+            .Comment__time {
+              margin-top: 8px;
+              font-size: 10px;
+              color: #666;
+            }
+
+            .Comment__content {
+              margin-top: 5px;
+              color: #777;
+            }
+            ul{
+              padding: 0;
+            }
+          }
+        }
       }
     }
   }
@@ -35,6 +87,14 @@
     input,
     textarea {
       color: #555;
+    }
+    .Comment__cancel__reply {
+      cursor: pointer;
+      padding: 0.2em 0.6em 0.15em;
+      font-size: 10px;
+      border-radius: 3px;
+      color: #fff !important;
+      background-color: skyblue;
     }
   }
 }

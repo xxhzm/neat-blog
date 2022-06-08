@@ -6,11 +6,11 @@
       <div class="Base__cont">
         <div class="row">
           <!-- 左侧 -->
-          <div class="col-9">
+          <div class="col">
             <router-view></router-view>
           </div>
           <!-- 右侧 -->
-          <div class="col">
+          <div class="col-3 Sidebar">
             <Sidebar />
           </div>
         </div>

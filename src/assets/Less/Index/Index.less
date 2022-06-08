@@ -1,19 +1,27 @@
-.Index__container{
+.Index__container {
   width: 100%;
   padding-bottom: 100px;
-  .pagination{
+  .pagination {
     position: absolute;
     left: 50%;
     transform: translate(-110%);
     background: #fff;
-    li{
+    li {
       background: #fff !important;
     }
-    button{
+    button {
       background: #fff !important;
     }
-    .is-active{
+    .is-active {
       background-color: var(--el-color-primary) !important;
+    }
+  }
+}
+
+@media screen and (max-width: 950px) {
+  .Index__container {
+    .pagination {
+      transform: translate(-50%);
     }
   }
 }

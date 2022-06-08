@@ -1,6 +1,6 @@
 <template>
   <div class="Index__container">
-    <ArticleContent v-for="item in store.getters.articleData.data" :key="item.id" :articleDate="item" v-loading="loading" ></ArticleContent>
+    <ArticleContent v-for="item in store.getters.articleData.data" :key="item.id" :articleData="item" v-loading="loading" ></ArticleContent>
     <el-pagination class="mt-5 shadow pagination" background layout="prev, pager, next" :page-size="5" :total="count" hide-on-single-page :current-page="currentPage" @current-change="ArticlePageChange" />
   </div>
 </template>

@@ -2,16 +2,37 @@
   <div class="Comment__container shadow" ref="MyComment" v-loading="!CommentLoadingShow">
     <h2 class="Comment__title">评论</h2>
     <!-- 评论显示 -->
-    <div class="Comment__get__cont">
-      <div class="Comment__get__cont__null" v-if="store.state.CommentContent.code === ''">
+    <div class="Comment__get__cont mt-3">
+      <div class="Comment__get__cont__null" v-if="store.state.CommentContent.data.count === 0">
         <img src="@/assets/images/Comment.png">
         <span>无人评论,快来抢个沙发!</span>
       </div>
 
       <div class="Comment__get__cont__content" v-else>
         <ul>
-          <li v-for="item in store.state.CommentContent.data.data" :key="item.id">
-            {{ item }}
+          <li v-for="item in store.state.CommentContent.data.data" :key="item.id" class="mt-2">
+            <div class="Comment__get__cont__content__left">
+              <img :src="headImg(item.email)" alt="">
+            </div>
+            <div class="Comment__get__cont__content__right">
+              <p class="Comment__nickname"><b><a :href="item.url">{{ item.nickname }}</a></b><a class="Comment__reply" @click="CommentReply(item.id)">回复</a></p>
+              <p class="Comment__time">{{ item.create_time }}</p>
+              <div class="Comment__content" v-html="item.expand.html"></div>
+              <!-- 子级评论 -->
+              <ul>
+                <li v-for="itemSon in item.son" :key="itemSon.id" class="mt-2">
+                  <div class="Comment__get__cont__content__left">
+                    <img :src="headImg(itemSon.email)" alt="">
+                  </div>
+                  <div class="Comment__get__cont__content__right">
+                    <p class="Comment__nickname"><b><a :href="itemSon.url">{{ itemSon.nickname }}</a></b><a class="Comment__reply" @click="CommentReply(item.id)">回复</a></p>
+                    <p class="Comment__time">{{ itemSon.create_time }}</p>
+                    <div class="Comment__content" v-html="itemSon.expand.html"></div>
+                  </div>
+                </li>
+              </ul>
+              <!-- 子级评论 -->
+            </div>
           </li>
         </ul>
       </div>
@@ -29,9 +50,10 @@
         <input type="text" class="form-control p-2" placeholder="网址或博客" v-model.lazy.trim="commentInfo.url">
       </div>
       <div class="col-md-12">
-        <textarea class="form-control p-2" rows="4" placeholder="说点什么吧..." v-model.lazy.trim="commentInfo.content"></textarea>
+        <textarea class="form-control p-2" rows="4" placeholder="说点什么吧..." v-model.lazy.trim="commentInfo.content" ref="textarea"></textarea>
       </div>
       <div class="col-md-12 mt-4">
+        <p class="Comment__cancel__reply float-start" v-if="commentInfo.pid !== ''" @click="CommentCancelReply">取消回复</p>
         <el-button class="float-end" type="primary" @click="commentSubmit" :loading="commentSubmitButtonStatus">发表评论</el-button>
       </div>
     </div>
@@ -39,7 +61,7 @@
 </template>
 
 <script>
-import { reactive, ref, toRefs, onMounted } from 'vue'
+import { reactive, ref, toRefs, nextTick, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { ElNotification } from 'element-plus'
 import { RequestPostComment } from '@/utils/Comment/PostComment'
@@ -58,6 +80,23 @@ const useSendCommentEffect = (store, Id) => {
     pid: '',
     article_id: Id.value
   })
+
+  // 文本框
+  const textarea = ref(null)
+  // 评论回复，修改 pid
+  const CommentReply = (id) => {
+    commentInfo.pid = id
+
+    // 给文本框设置焦点
+    nextTick(() => {
+      textarea.value.focus()
+    })
+  }
+
+  // 取消回复
+  const CommentCancelReply = () => {
+    commentInfo.pid = ''
+  }
 
   // 判断是否符合规则
   const commentSubmit = () => {
@@ -142,7 +181,10 @@ const useSendCommentEffect = (store, Id) => {
   return {
     commentSubmitButtonStatus,
     commentInfo,
-    commentSubmit
+    commentSubmit,
+    CommentReply,
+    CommentCancelReply,
+    textarea
   }
 }
 
@@ -197,9 +239,18 @@ const useCommentStatusEffect = (store, Id) => {
     }
   })
 
+  // 评论头像显示
+  const headImg = (email) => {
+    // 如果是 QQ 邮箱，那就自动获取请求头像
+    if (email.indexOf('qq.com') !== -1) {
+      return '//q2.qlogo.cn/g?b=qq&s=100&nk=' + email
+    }
+    return 'https://sdn.geekzu.org/avatar/'
+  }
   return {
     MyComment,
-    CommentLoadingShow
+    CommentLoadingShow,
+    headImg
   }
 }
 
@@ -210,9 +261,18 @@ export default {
 
     const { id: Id } = toRefs(props)
 
-    const { commentSubmitButtonStatus, commentInfo, commentSubmit } = useSendCommentEffect(store, Id)
+    const { commentSubmitButtonStatus, commentInfo, commentSubmit, CommentReply, CommentCancelReply, textarea } = useSendCommentEffect(store, Id)
 
-    const { MyComment, CommentLoadingShow } = useCommentStatusEffect(store, Id)
+    const { MyComment, CommentLoadingShow, headImg } = useCommentStatusEffect(store, Id)
+
+    // 组件销毁时清空评论的内容
+    onUnmounted(() => {
+      store.dispatch('CommentContent', {
+        code: '',
+        data: {},
+        msg: ''
+      })
+    })
 
     return {
       store,
@@ -220,10 +280,14 @@ export default {
       commentSubmitButtonStatus,
       commentInfo,
       commentSubmit,
+      CommentReply,
+      CommentCancelReply,
+      textarea,
 
       MyComment,
-      CommentLoadingShow
+      CommentLoadingShow,
 
+      headImg
     }
   }
 }
