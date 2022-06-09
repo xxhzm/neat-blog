@@ -1,9 +1,10 @@
-// 独立页面接口
+// Header 请求独立页面接口
 import request from '../request'
-export const RequestGetPage = (alias) => {
+
+export const RequestGetAllPage = () => {
   return request.get('api/page', {
     params: {
-      alias
+      limit: 4
     }
   })
 }

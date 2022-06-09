@@ -1,8 +1,8 @@
 <template>
-  <div class="tag__container">
+  <div class="tag__container" v-loading="loading">
     <h2 class="tag__title" v-if="TagData.count === 0">标签 {{ TagName }} 下暂无文章</h2>
     <h2 class="tag__title" v-else>标签 {{ TagName }} 下的文章</h2>
-    <ArticleContent v-for="item in TagData.data" :key="item.id" :articleData="item" v-loading="loading"></ArticleContent>
+    <ArticleContent v-for="item in TagData.data" :key="item.id" :articleData="item"></ArticleContent>
     <el-pagination class="mt-5 shadow pagination" background layout="prev, pager, next" :page-size="5" :total="count" hide-on-single-page :current-page="currentPage" @current-change="ArticlePageChange" />
   </div>
 </template>
@@ -26,8 +26,8 @@ export default {
 
     const count = ref(0)
 
-    const GetTag = async (id) => {
-      const { data: res } = await RequestGetTag(id)
+    const GetTag = async (id, page) => {
+      const { data: res } = await RequestGetTag(id, page)
       TagData.value = res.data.expand
       TagName.value = res.data.name
       count.value = res.data.expand.count
@@ -39,6 +39,8 @@ export default {
 
     // 组件复用时，获取新的内容
     onBeforeRouteUpdate((to, from, next) => {
+      loading.value = true
+
       GetTag(to.params.id)
       next()
     })
@@ -49,19 +51,12 @@ export default {
     const ArticlePageChange = async (val) => {
       loading.value = true
 
-      // 发送请求
-      const { data: res } = await RequestGetTag(TagId.value, val)
-      TagData.value = res.data.expand
-      TagName.value = res.data.name
-      count.value = res.data.expand.count
-      currentPage.value = val
+      GetTag(TagId.value, val)
 
       // 操作页面回到顶部
       window.scroll({
         top: 0
       })
-
-      loading.value = false
     }
 
     return {
@@ -81,14 +76,14 @@ export default {
 </script>
 
 <style lang="less">
-.tag__title{
-  font-size: 16px;
-  font-weight: 700;
-  color: #444;
-}
 .tag__container{
   width: 100%;
   padding-bottom: 100px;
+  .tag__title{
+    font-size: 16px;
+    font-weight: 700;
+    color: #444;
+  }
   .pagination {
     position: absolute;
     left: 50%;

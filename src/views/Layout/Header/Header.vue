@@ -4,7 +4,7 @@
       <div class="Header__top">
         <a href="/" class="Header__logo"><img :src="store.getters.logo"></a>
         <div class="Header__search">
-          <input type="text" placeholder="请输入搜索内容..." @keyup.enter="search">
+          <input type="text" placeholder="请输入搜索内容..." @keyup.enter="search" v-model="searchValue">
           <i class="bi bi-search" @click="search"></i>
         </div>
       </div>
@@ -13,9 +13,13 @@
           <li>
             <router-link to="/">首页</router-link>
           </li>
+
           <li v-for="item in store.getters.page" :key="item.id">
-            <router-link to="">{{ item.title }}</router-link>
+            <router-link v-if="item.alias == 'links'" to="/links" >{{ item.title }}</router-link>
+            <router-link v-else-if="item.alias == 'msgwall'" to="/msgwall" >{{ item.title }}</router-link>
+            <router-link v-else :to="'/page/'+ item.alias">{{ item.title }}</router-link>
           </li>
+
         </ul>
         <div class="Header__bottom__right">
           <el-button @click="ShowOrHideEcharts" class="echartsButton"><img src="@/assets/images/statistics.png">统计</el-button>
@@ -52,7 +56,8 @@
 <script>
 import { ref, nextTick, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
-import { RequestGetPage } from '@/utils/Page/GetPage'
+import { useRouter } from 'vue-router'
+import { RequestGetAllPage } from '@/utils/Page/GetAllPage'
 import { RequestGetGrpup } from '@/utils/Group/GetGroup'
 // Echarts
 import * as echarts from 'echarts'
@@ -63,7 +68,7 @@ import { CanvasRenderer } from 'echarts/renderers'
 
 // 请求独立页面数据
 const useGetPageEffect = async (store) => {
-  const { data: res } = await RequestGetPage()
+  const { data: res } = await RequestGetAllPage()
   // 将数据存入 vuex
   store.dispatch('page', res)
 }
@@ -172,8 +177,10 @@ const useEchartsEffect = (store) => {
 
 export default {
   setup () {
-    // 初始化vuex
+    // 初始化 vuex
     const store = useStore()
+    // 初始化 router
+    const router = useRouter()
 
     // 判断 vuex 中页面是否为空
     // 如果为空，则调用 API 获取页面
@@ -186,8 +193,11 @@ export default {
     }
 
     // 搜索
+    const searchValue = ref('')
+
     const search = () => {
-      console.log('search')
+      router.push({ name: 'Search', params: { value: searchValue.value } })
+      searchValue.value = ''
     }
 
     // 退出登录
@@ -207,6 +217,7 @@ export default {
       EchartsDisplay,
       ShowOrHideEcharts,
       search,
+      searchValue,
       logout
     }
   }
